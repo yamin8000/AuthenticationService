@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+#
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Domain", "Authentication.Domain\Authentication.Domain.csproj", "{EA8F844F-CFAA-4D55-A9B8-E9DF1C139539}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Application", "Authentication.Application\Authentication.Application.csproj", "{3302A6E2-003C-401E-92CE-81FB2C3C7605}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Infrastructure", "Authentication.Infrastructure\Authentication.Infrastructure.csproj", "{7EF2D3B2-BD20-4D46-AFB1-5FB0F70CEB0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Presentation", "Authentication.Presentation\Authentication.Presentation.csproj", "{2FD9942D-B403-4F9C-B2B6-073DCB0A47A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA8F844F-CFAA-4D55-A9B8-E9DF1C139539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA8F844F-CFAA-4D55-A9B8-E9DF1C139539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA8F844F-CFAA-4D55-A9B8-E9DF1C139539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA8F844F-CFAA-4D55-A9B8-E9DF1C139539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3302A6E2-003C-401E-92CE-81FB2C3C7605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3302A6E2-003C-401E-92CE-81FB2C3C7605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3302A6E2-003C-401E-92CE-81FB2C3C7605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3302A6E2-003C-401E-92CE-81FB2C3C7605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EF2D3B2-BD20-4D46-AFB1-5FB0F70CEB0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EF2D3B2-BD20-4D46-AFB1-5FB0F70CEB0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EF2D3B2-BD20-4D46-AFB1-5FB0F70CEB0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EF2D3B2-BD20-4D46-AFB1-5FB0F70CEB0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD9942D-B403-4F9C-B2B6-073DCB0A47A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD9942D-B403-4F9C-B2B6-073DCB0A47A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD9942D-B403-4F9C-B2B6-073DCB0A47A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD9942D-B403-4F9C-B2B6-073DCB0A47A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
