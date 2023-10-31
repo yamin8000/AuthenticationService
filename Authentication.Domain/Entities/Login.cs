@@ -2,7 +2,9 @@
 
 public class Login : BaseEntity
 {
-    public required int UserId { get; set; }
     public required string Ip { get; set; }
-    public bool IsSuccess { get; set; } = false;
+    public bool IsSuccess { get; set; }
+    
+    public int UserChannelId { get; set; }
+    public UserChannel? UserChannel { get; set; }
 }
