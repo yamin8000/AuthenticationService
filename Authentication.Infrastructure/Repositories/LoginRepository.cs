@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Repositories;
 
-public class LoginRepository : EntityRepository<Login>
+public class LoginRepository : BaseEntityRepository<Login>
 {
     protected LoginRepository(ApplicationDbContext context, DbSet<Login> dbSet) : base(context, dbSet)
     {

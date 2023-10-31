@@ -1,4 +1,6 @@
-﻿namespace Authentication.Domain.Interfaces;
+﻿using Authentication.Domain.Entities;
+
+namespace Authentication.Domain.Interfaces;
 
 public interface IRepository<T> where T : class
 {

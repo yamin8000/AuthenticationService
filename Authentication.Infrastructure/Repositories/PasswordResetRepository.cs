@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Repositories;
 
-public class PasswordResetRepository : EntityRepository<PasswordReset>
+public class PasswordResetRepository : BaseEntityRepository<PasswordReset>
 {
     protected PasswordResetRepository(ApplicationDbContext context, DbSet<PasswordReset> dbSet) : base(context, dbSet)
     {

@@ -5,25 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Repositories;
 
-public class EntityRepository<T> : IRepository<T> where T : BaseEntity
+public class BaseEntityRepository<T> : IRepository<T> where T : BaseEntity
 {
-    protected readonly ApplicationDbContext Context;
-    protected readonly DbSet<T> DbSet;
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<T> _dbSet;
 
-    protected EntityRepository(ApplicationDbContext context, DbSet<T> dbSet)
+    protected BaseEntityRepository(ApplicationDbContext context, DbSet<T> dbSet)
     {
-        Context = context;
-        DbSet = dbSet;
+        _context = context;
+        _dbSet = dbSet;
     }
 
     public virtual async Task<T?> GetByIdAsync(Guid id)
     {
-        return await DbSet.FindAsync(id);
+        return await _dbSet.FindAsync(id);
     }
 
     public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await DbSet.ToListAsync();
+        return await _dbSet.ToListAsync();
     }
 
     public virtual async Task AddAsync(T entity)
@@ -31,8 +31,8 @@ public class EntityRepository<T> : IRepository<T> where T : BaseEntity
         if (entity == null)
             throw new ArgumentNullException(nameof(entity));
 
-        DbSet.Add(entity);
-        await Context.SaveChangesAsync();
+        _dbSet.Add(entity);
+        await _context.SaveChangesAsync();
     }
 
     public virtual async Task UpdateAsync(T entity)
@@ -42,18 +42,18 @@ public class EntityRepository<T> : IRepository<T> where T : BaseEntity
             throw new ArgumentNullException(nameof(entity));
         }
 
-        Context.Entry(entity).State = EntityState.Modified;
-        await Context.SaveChangesAsync();
+        _context.Entry(entity).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
     }
 
     public virtual async Task ForceDeleteAsync(Guid id)
     {
-        var entity = await DbSet.FindAsync(id);
+        var entity = await _dbSet.FindAsync(id);
 
         if (entity != null)
         {
-            DbSet.Remove(entity);
-            await Context.SaveChangesAsync();
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

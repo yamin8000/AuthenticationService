@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Repositories;
 
-public class VerificationRepository : EntityRepository<Verification>
+public class VerificationRepository : BaseEntityRepository<Verification>
 {
     protected VerificationRepository(ApplicationDbContext context, DbSet<Verification> dbSet) : base(context, dbSet)
     {

@@ -6,7 +6,7 @@ namespace Authentication.Infrastructure.Repositories;
 
 public class UserRepository : SafeDeleteEntityRepository<User>
 {
-    protected UserRepository(ApplicationDbContext context, DbSet<User> dbSet) : base(context, dbSet)
+    public UserRepository(ApplicationDbContext context, DbSet<User> dbSet) : base(context, dbSet)
     {
     }
 }
