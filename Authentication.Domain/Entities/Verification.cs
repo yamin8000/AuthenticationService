@@ -1,6 +1,4 @@
-﻿using Authentication.Domain.Enums;
-
-namespace Authentication.Domain.Entities;
+﻿namespace Authentication.Domain.Entities;
 
 public class Verification : BaseEntity
 {
