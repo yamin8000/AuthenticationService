@@ -1,7 +1,6 @@
 ﻿using Authentication.Domain.Entities;
 using Authentication.Domain.Interfaces;
 using Authentication.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Repositories;
 
@@ -9,17 +8,17 @@ public class SafeDeleteEntityRepository<T> :
     ISafeDeleteRepository<T> where T : SafeDeleteEntity
 {
     private readonly ApplicationDbContext _context;
-    private readonly DbSet<T> _dbSet;
+    private readonly EntityRepository<T> _entityRepository;
 
-    protected SafeDeleteEntityRepository(ApplicationDbContext context, DbSet<T> dbSet)
+    protected SafeDeleteEntityRepository(ApplicationDbContext context)
     {
         _context = context;
-        _dbSet = dbSet;
+        _entityRepository = new EntityRepository<T>(_context);
     }
 
     public virtual async Task DeleteAsync(Guid id)
     {
-        var entity = await _dbSet.FindAsync(id);
+        var entity = await _context.Set<T>().FindAsync(id);
 
         if (entity != null)
         {
@@ -30,7 +29,7 @@ public class SafeDeleteEntityRepository<T> :
 
     public virtual async Task RestoreAsync(Guid id)
     {
-        var entity = await _dbSet.FindAsync(id);
+        var entity = await _context.Set<T>().FindAsync(id);
 
         if (entity != null)
         {
@@ -41,42 +40,26 @@ public class SafeDeleteEntityRepository<T> :
 
     public virtual async Task<T?> GetByIdAsync(Guid id)
     {
-        return await _dbSet.FindAsync(id);
+        return await _entityRepository.GetByIdAsync(id);
     }
 
     public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        return await _entityRepository.GetAllAsync();
     }
 
     public virtual async Task AddAsync(T entity)
     {
-        if (entity == null)
-            throw new ArgumentNullException(nameof(entity));
-
-        _dbSet.Add(entity);
-        await _context.SaveChangesAsync();
+        await _entityRepository.AddAsync(entity);
     }
 
     public virtual async Task UpdateAsync(T entity)
     {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity));
-        }
-
-        _context.Entry(entity).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        await _entityRepository.UpdateAsync(entity);
     }
 
     public virtual async Task ForceDeleteAsync(Guid id)
     {
-        var entity = await _dbSet.FindAsync(id);
-
-        if (entity != null)
-        {
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
+        await _entityRepository.ForceDeleteAsync(id);
     }
 }

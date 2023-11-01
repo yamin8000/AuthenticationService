@@ -12,7 +12,7 @@ public class LoginController : ControllerBase
 {
     private readonly IRepository<Login> _repository;
 
-    public LoginController(ISafeDeleteRepository<Login> lRepository)
+    public LoginController(IRepository<Login> lRepository)
     {
         _repository = lRepository;
     }

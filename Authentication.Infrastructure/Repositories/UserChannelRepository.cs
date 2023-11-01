@@ -6,7 +6,7 @@ namespace Authentication.Infrastructure.Repositories;
 
 public class UserChannelRepository : SafeDeleteEntityRepository<UserChannel>
 {
-    protected UserChannelRepository(ApplicationDbContext context, DbSet<UserChannel> dbSet) : base(context, dbSet)
+    protected UserChannelRepository(ApplicationDbContext context) : base(context)
     {
     }
 }
