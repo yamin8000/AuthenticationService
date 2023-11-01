@@ -1,24 +1,11 @@
 ﻿using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.Presentation.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class UserController : ControllerBase
+public class UserController : CrudController<User>
 {
-    private readonly IRepository<User> _repository;
-
-    public UserController(IRepository<User> lRepository)
+    public UserController(IRepository<User> repository) : base(repository)
     {
-        _repository = lRepository;
-    }
-
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-    {
-        var users = await _repository.GetAllAsync();
-        return Ok(users);
     }
 }

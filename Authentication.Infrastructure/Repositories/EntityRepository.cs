@@ -7,9 +7,9 @@ namespace Authentication.Infrastructure.Repositories;
 
 public class EntityRepository<T> : IRepository<T> where T : BaseEntity
 {
-    private readonly ApplicationDbContext _context;
+    private readonly AppDbContext _context;
 
-    public EntityRepository(ApplicationDbContext context)
+    public EntityRepository(AppDbContext context)
     {
         _context = context;
     }

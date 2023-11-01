@@ -3,7 +3,6 @@
 public class Verification : BaseEntity
 {
     public required string Code { get; set; }
-
-    public required int UserChannelId { get; set; }
+    
     public UserChannel? UserChannel { get; set; }
 }

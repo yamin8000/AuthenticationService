@@ -7,10 +7,10 @@ namespace Authentication.Infrastructure.Repositories;
 public class SafeDeleteEntityRepository<T> :
     ISafeDeleteRepository<T> where T : SafeDeleteEntity
 {
-    private readonly ApplicationDbContext _context;
+    private readonly AppDbContext _context;
     private readonly EntityRepository<T> _entityRepository;
 
-    protected SafeDeleteEntityRepository(ApplicationDbContext context)
+    protected SafeDeleteEntityRepository(AppDbContext context)
     {
         _context = context;
         _entityRepository = new EntityRepository<T>(_context);
