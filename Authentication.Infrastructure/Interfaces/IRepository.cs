@@ -1,8 +1,8 @@
 ﻿using Authentication.Domain.Entities;
 
-namespace Authentication.Domain.Interfaces;
+namespace Authentication.Infrastructure.Interfaces;
 
-public interface IRepository<T> where T : class
+public interface IRepository<T> where T : BaseEntity
 {
     Task<T?> GetByIdAsync(Guid id);
     Task<IEnumerable<T>> GetAllAsync();

@@ -6,7 +6,7 @@ namespace Authentication.Infrastructure.Repositories;
 
 public class VerificationRepository : EntityRepository<Verification>
 {
-    protected VerificationRepository(ApplicationDbContext context) : base(context)
+    public VerificationRepository(ApplicationDbContext context) : base(context)
     {
     }
 }

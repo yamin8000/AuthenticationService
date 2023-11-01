@@ -6,7 +6,7 @@ namespace Authentication.Infrastructure.Repositories;
 
 public class PasswordResetRepository : EntityRepository<PasswordReset>
 {
-    protected PasswordResetRepository(ApplicationDbContext context) : base(context)
+    public PasswordResetRepository(ApplicationDbContext context) : base(context)
     {
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Authentication.Domain.Entities;
-using Authentication.Domain.Interfaces;
+using Authentication.Infrastructure.Interfaces;
 using Authentication.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +9,7 @@ public class EntityRepository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly ApplicationDbContext _context;
 
-    protected internal EntityRepository(ApplicationDbContext context)
+    public EntityRepository(ApplicationDbContext context)
     {
         _context = context;
     }

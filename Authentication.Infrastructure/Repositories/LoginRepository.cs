@@ -6,7 +6,7 @@ namespace Authentication.Infrastructure.Repositories;
 
 public class LoginRepository : EntityRepository<Login>
 {
-    protected LoginRepository(ApplicationDbContext context) : base(context)
+    public LoginRepository(ApplicationDbContext context) : base(context)
     {
     }
 }

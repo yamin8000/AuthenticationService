@@ -1,5 +1,5 @@
 ﻿using Authentication.Domain.Entities;
-using Authentication.Domain.Interfaces;
+using Authentication.Infrastructure.Interfaces;
 using Authentication.Infrastructure.Persistence;
 
 namespace Authentication.Infrastructure.Repositories;
