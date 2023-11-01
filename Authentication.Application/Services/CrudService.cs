@@ -4,7 +4,7 @@ using Authentication.Infrastructure.Interfaces;
 
 namespace Authentication.Application.Services;
 
-public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
+public class CrudService<TEntity, TCreateDto, TUpdateDto>
     : ICrudService<TEntity, TCreateDto, TUpdateDto>
     where TEntity : BaseEntity
     where TCreateDto : class
@@ -12,7 +12,7 @@ public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
 {
     private readonly IRepository<TEntity> _repository;
 
-    protected CrudService(IRepository<TEntity> repository)
+    public CrudService(IRepository<TEntity> repository)
     {
         _repository = repository;
     }
@@ -27,9 +27,15 @@ public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
         return await _repository.GetByIdAsync(id);
     }
 
-    public abstract Task<TEntity> CreateAsync(TCreateDto createDto);
+    public virtual Task<TEntity?> CreateAsync(TCreateDto createDto)
+    {
+        return null;
+    }
 
-    public abstract Task<TEntity> UpdateAsync(Guid id, TUpdateDto updateDto);
+    public virtual Task<TEntity?> UpdateAsync(Guid id, TUpdateDto updateDto)
+    {
+        return null;
+    }
 
     public virtual async Task<bool> ForceDeleteAsync(Guid id)
     {

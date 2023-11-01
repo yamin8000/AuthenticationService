@@ -1,11 +1,12 @@
-﻿using Authentication.Domain.Entities;
-using Authentication.Infrastructure.Interfaces;
+﻿using Authentication.Application.Dtos;
+using Authentication.Application.Interfaces;
+using Authentication.Domain.Entities;
 
 namespace Authentication.Presentation.Controllers;
 
-public class UserController : CrudController<User>
+public class UserController : SafeDeleteCrudController<User, UserCreateDto, UserUpdateDto>
 {
-    public UserController(IRepository<User> repository) : base(repository)
+    public UserController(ICrudService<User, UserCreateDto, UserUpdateDto> service) : base(service)
     {
     }
 }

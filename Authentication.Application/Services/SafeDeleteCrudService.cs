@@ -4,49 +4,27 @@ using Authentication.Infrastructure.Interfaces;
 
 namespace Authentication.Application.Services;
 
-public abstract class SafeDeleteCrudService<TEntity, TCreateDto, TUpdateDto>
-    : ISafeDeleteCrudService<TEntity, TCreateDto, TUpdateDto>
+public class SafeDeleteCrudService<TEntity, TCreateDto, TUpdateDto>
+    : CrudService<TEntity, TCreateDto, TUpdateDto>, ISafeDeleteCrudService
     where TEntity : SafeDeleteEntity
     where TCreateDto : class
     where TUpdateDto : class
 {
-    private readonly CrudService<TEntity, TCreateDto, TUpdateDto> _crudService;
-    private readonly ISafeDeleteRepository<TEntity> _repository;
+    private readonly ISafeDeleteRepository _safeDeleteRepository;
 
-    protected SafeDeleteCrudService(
-        CrudService<TEntity, TCreateDto, TUpdateDto> crudService,
-        ISafeDeleteRepository<TEntity> repository)
+    protected SafeDeleteCrudService(ISafeDeleteRepository safeDeleteRepository, IRepository<TEntity> repository)
+        : base(repository)
     {
-        _crudService = crudService;
-        _repository = repository;
-    }
-
-    public async Task<IEnumerable<TEntity?>> GetAllAsync()
-    {
-        return await _crudService.GetAllAsync();
-    }
-
-    public async Task<TEntity?> GetByIdAsync(Guid id)
-    {
-        return await _crudService.GetByIdAsync(id);
-    }
-
-    public abstract Task<TEntity> CreateAsync(TCreateDto createDto);
-
-    public abstract Task<TEntity> UpdateAsync(Guid id, TUpdateDto updateDto);
-
-    public async Task<bool> ForceDeleteAsync(Guid id)
-    {
-        return await _crudService.ForceDeleteAsync(id);
+        _safeDeleteRepository = safeDeleteRepository;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        return await _repository.DeleteAsync(id);
+        return await _safeDeleteRepository.DeleteAsync(id);
     }
 
     public async Task<bool> RestoreAsync(Guid id)
     {
-        return await _repository.RestoreAsync(id);
+        return await _safeDeleteRepository.RestoreAsync(id);
     }
 }

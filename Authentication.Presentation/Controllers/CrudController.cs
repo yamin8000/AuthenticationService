@@ -1,24 +1,52 @@
-﻿using Authentication.Domain.Entities;
-using Authentication.Infrastructure.Interfaces;
+﻿using Authentication.Application.Interfaces;
+using Authentication.Domain.Entities;
+using Authentication.Presentation.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CrudController<T> : ControllerBase where T : BaseEntity
+public class CrudController<TEntity, TCreateDto, TUpdateDto>
+    : ControllerBase, ICrudController<TCreateDto, TUpdateDto>
+    where TEntity : SafeDeleteEntity
+    where TCreateDto : class
+    where TUpdateDto : class
 {
-    private readonly IRepository<T> _repository;
+    private readonly ICrudService<TEntity, TCreateDto, TUpdateDto> _service;
 
-    public CrudController(IRepository<T> repository)
+    public CrudController(ICrudService<TEntity, TCreateDto, TUpdateDto> service)
     {
-        _repository = repository;
+        _service = service;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<T>>> GetAll()
+    public Task<IActionResult> GetAllAsync()
     {
-        var items = await _repository.GetAllAsync();
-        return Ok(items);
+        return Task.FromResult<IActionResult>(Ok(_service.GetAllAsync()));
+    }
+
+    [HttpGet("{id:guid}")]
+    public Task<IActionResult> GetByIdAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpPost]
+    public Task<IActionResult> CreateAsync([FromBody] TCreateDto createDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpPut("{id:guid}")]
+    public Task<IActionResult> UpdateAsync(Guid id, [FromBody] TUpdateDto updateDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public Task<IActionResult> ForceDeleteAsync(Guid id)
+    {
+        throw new NotImplementedException();
     }
 }

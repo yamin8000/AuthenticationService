@@ -9,7 +9,7 @@ public interface ICrudService<TEntity, in TCreateDto, in TUpdateDto>
 {
     Task<IEnumerable<TEntity?>> GetAllAsync();
     Task<TEntity?> GetByIdAsync(Guid id);
-    Task<TEntity> CreateAsync(TCreateDto createDto);
-    Task<TEntity> UpdateAsync(Guid id, TUpdateDto updateDto);
+    Task<TEntity?> CreateAsync(TCreateDto createDto);
+    Task<TEntity?> UpdateAsync(Guid id, TUpdateDto updateDto);
     Task<bool> ForceDeleteAsync(Guid id);
 }
