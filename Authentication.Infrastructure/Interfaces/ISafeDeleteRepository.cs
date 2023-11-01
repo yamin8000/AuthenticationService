@@ -4,6 +4,6 @@ namespace Authentication.Infrastructure.Interfaces;
 
 public interface ISafeDeleteRepository<T>: IRepository<T> where T : SafeDeleteEntity
 {
-    Task DeleteAsync(Guid id);
-    Task RestoreAsync(Guid id);
+    Task<bool> DeleteAsync(Guid id);
+    Task<bool> RestoreAsync(Guid id);
 }

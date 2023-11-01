@@ -9,7 +9,14 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Authentication.Infrastructure\Authentication.Infrastructure.csproj" />
+    <ItemGroup>
+      <Folder Include="Dtos\" />
     </ItemGroup>
+
+
+    </ItemGroup>
+
+
 
 
 

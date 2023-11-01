@@ -2,11 +2,11 @@
 
 namespace Authentication.Infrastructure.Interfaces;
 
-public interface IRepository<T> where T : BaseEntity
+public interface IRepository<TEntity> where TEntity : BaseEntity
 {
-    Task<T?> GetByIdAsync(Guid id);
-    Task<IEnumerable<T>> GetAllAsync();
-    Task AddAsync(T entity);
-    Task UpdateAsync(T entity);
-    Task ForceDeleteAsync(Guid id);
+    Task<TEntity?> GetByIdAsync(Guid id);
+    Task<IEnumerable<TEntity?>> GetAllAsync();
+    Task<TEntity?> CreateAsync(TEntity? entity);
+    Task<TEntity?> UpdateAsync(TEntity? entity);
+    Task<bool> ForceDeleteAsync(Guid id);
 }
