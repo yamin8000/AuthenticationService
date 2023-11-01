@@ -9,7 +9,7 @@ namespace Authentication.Presentation.Controllers;
 [Route("[controller]")]
 public class CrudController<TEntity, TCreateDto, TUpdateDto>
     : ControllerBase, ICrudController<TCreateDto, TUpdateDto>
-    where TEntity : SafeDeleteEntity
+    where TEntity : BaseEntity
     where TCreateDto : class
     where TUpdateDto : class
 {
@@ -21,32 +21,32 @@ public class CrudController<TEntity, TCreateDto, TUpdateDto>
     }
 
     [HttpGet]
-    public Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync()
     {
-        return Task.FromResult<IActionResult>(Ok(_service.GetAllAsync()));
+        return Ok(await _service.GetAllAsync());
     }
 
     [HttpGet("{id:guid}")]
-    public Task<IActionResult> GetByIdAsync(Guid id)
+    public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return Ok(await _service.GetByIdAsync(id));
     }
 
     [HttpPost]
-    public Task<IActionResult> CreateAsync([FromBody] TCreateDto createDto)
+    public async Task<IActionResult> CreateAsync([FromBody] TCreateDto createDto)
     {
-        throw new NotImplementedException();
+        return Ok(await _service.CreateAsync(createDto));
     }
 
     [HttpPut("{id:guid}")]
-    public Task<IActionResult> UpdateAsync(Guid id, [FromBody] TUpdateDto updateDto)
+    public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] TUpdateDto updateDto)
     {
-        throw new NotImplementedException();
+        return Ok(await _service.UpdateAsync(id, updateDto));
     }
 
     [HttpDelete("{id:guid}")]
-    public Task<IActionResult> ForceDeleteAsync(Guid id)
+    public async Task<IActionResult> ForceDeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return Ok(await _service.ForceDeleteAsync(id));
     }
 }

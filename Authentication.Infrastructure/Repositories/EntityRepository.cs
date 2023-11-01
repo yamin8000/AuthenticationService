@@ -31,15 +31,15 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
 
         _context.Set<TEntity>().Add(entity);
         
+        _context.Entry(entity).State = EntityState.Added;
+        
         return await Save(entity);
     }
 
     public virtual async Task<TEntity?> UpdateAsync(TEntity? entity)
     {
         if (entity == null)
-        {
             throw new ArgumentNullException(nameof(entity));
-        }
 
         _context.Entry(entity).State = EntityState.Modified;
 

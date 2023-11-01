@@ -1,6 +1,7 @@
 ﻿using Authentication.Application.Interfaces;
 using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
+using Authentication.Infrastructure.Repositories;
 
 namespace Authentication.Application.Services;
 
