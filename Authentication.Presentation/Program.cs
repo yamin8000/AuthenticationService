@@ -6,7 +6,6 @@ using Authentication.Infrastructure.Interfaces;
 using Authentication.Infrastructure.Persistence;
 using Authentication.Infrastructure.Repositories;
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>();
 
@@ -19,6 +18,8 @@ builder.Services.AddScoped<ICrudService<UserChannel, UserChannelCreateDto, UserC
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
