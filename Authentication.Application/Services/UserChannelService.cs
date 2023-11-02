@@ -15,9 +15,7 @@ public class UserChannelService : CrudService<UserChannel, UserChannelCreateDto,
         return await Repository.CreateAsync(new UserChannel
         {
             Channel = createDto.Channel,
-            Value = createDto.Value,
-            IsDefault = createDto.IsDefault,
-            User = createDto.User
+            Value = createDto.Value
         });
     }
 
