@@ -23,6 +23,7 @@ This service handles authentication functionalities contains Sign-up, Sing-in, F
 
 ![db-diagram](./Assets/database.svg)
 </details>
+
 ### Database init
 
 ```shell
