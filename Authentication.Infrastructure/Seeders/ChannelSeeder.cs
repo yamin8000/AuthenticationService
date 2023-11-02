@@ -11,10 +11,10 @@ public class ChannelSeeder : Seeder
 
     public override void Seed()
     {
-        foreach (var channel in (Domain.Enums.Channel[])Enum.GetValues(typeof(Domain.Enums.Channel)))
+        foreach(int i in Enum.GetValues(typeof(Domain.Enums.Channel)))
         {
             ModelBuilder.Entity<Channel>().HasData(
-                new Channel { Id = Guid.NewGuid(), Name = channel.ToString() }
+                new Channel { Id = i, Name = Enum.GetName(typeof(Domain.Enums.Channel), i) }
             );
         }
     }

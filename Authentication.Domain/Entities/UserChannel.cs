@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace Authentication.Domain.Entities;
 
-namespace Authentication.Domain.Entities;
-
-//[Index(nameof(Channel),nameof(Value), IsUnique = true)]
-//[Index(nameof(User),nameof(Value), IsUnique = true)]
 public class UserChannel : BaseEntity
 {
     public required string Value { get; set; }

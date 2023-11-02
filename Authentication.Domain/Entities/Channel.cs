@@ -1,6 +1,10 @@
-﻿namespace Authentication.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-public class Channel : BaseEntity
+namespace Authentication.Domain.Entities;
+
+[Table("Channels")]
+public class Channel
 {
-    public required string Name { get; set; }
+    public required int Id { get; set; }
+    public required string? Name { get; set; }
 }
