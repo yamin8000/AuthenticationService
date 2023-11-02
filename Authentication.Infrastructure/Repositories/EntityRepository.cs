@@ -33,7 +33,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
 
         _context.Entry(entity).State = EntityState.Added;
 
-        return await Save(entity);
+        return await SaveAsyncChanges(entity);
     }
 
     public virtual async Task<TEntity?> UpdateAsync(TEntity? entity)
@@ -43,7 +43,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
 
         _context.Entry(entity).State = EntityState.Modified;
 
-        return await Save(entity);
+        return await SaveAsyncChanges(entity);
     }
 
     public async Task<bool> DeleteAsync(Guid id)
@@ -51,7 +51,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
         var entity = await _context.Set<TEntity>().FindAsync(id);
         if (entity == null) return false;
         entity.DeletedAt = DateTime.Now;
-        return await Save();
+        return await SaveAsyncChanges();
     }
 
     public async Task<bool> RestoreAsync(Guid id)
@@ -59,7 +59,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
         var entity = await _context.Set<TEntity>().FindAsync(id);
         if (entity == null) return false;
         entity.DeletedAt = null;
-        return await Save();
+        return await SaveAsyncChanges();
     }
 
     public virtual async Task<bool> ForceDeleteAsync(Guid id)
@@ -71,10 +71,10 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
 
         _context.Set<TEntity>().Remove(entity);
 
-        return await Save();
+        return await SaveAsyncChanges();
     }
 
-    private async Task<bool> Save()
+    private async Task<bool> SaveAsyncChanges()
     {
         int affectedRows;
         try
@@ -89,7 +89,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
         return affectedRows > 0;
     }
 
-    private async Task<TEntity?> Save(TEntity entity)
+    private async Task<TEntity?> SaveAsyncChanges(TEntity entity)
     {
         int affectedRows;
         try

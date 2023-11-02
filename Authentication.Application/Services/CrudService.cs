@@ -10,21 +10,21 @@ public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
     where TCreateDto : class
     where TUpdateDto : class
 {
-    private readonly IRepository<TEntity> _repository;
+    protected readonly IRepository<TEntity> Repository;
 
     protected CrudService(IRepository<TEntity> repository)
     {
-        _repository = repository;
+        Repository = repository;
     }
 
     public virtual async Task<IEnumerable<TEntity?>> GetAllAsync()
     {
-        return await _repository.GetAllAsync();
+        return await Repository.GetAllAsync();
     }
 
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {
-        return await _repository.GetByIdAsync(id);
+        return await Repository.GetByIdAsync(id);
     }
 
     public abstract Task<TEntity?> CreateAsync(TCreateDto createDto);
@@ -33,16 +33,16 @@ public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        return await _repository.DeleteAsync(id);
+        return await Repository.DeleteAsync(id);
     }
 
     public async Task<bool> RestoreAsync(Guid id)
     {
-        return await _repository.RestoreAsync(id);
+        return await Repository.RestoreAsync(id);
     }
     
     public virtual async Task<bool> ForceDeleteAsync(Guid id)
     {
-        return await _repository.ForceDeleteAsync(id);
+        return await Repository.ForceDeleteAsync(id);
     }
 }

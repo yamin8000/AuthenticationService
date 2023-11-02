@@ -1,6 +1,7 @@
 ﻿using Authentication.Application.Dtos;
 using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
+using Scrypt;
 
 namespace Authentication.Application.Services;
 
@@ -10,13 +11,30 @@ public class UserService : CrudService<User, UserCreateDto, UserUpdateDto>
     {
     }
 
-    public override Task<User?> CreateAsync(UserCreateDto createDto)
+    public override async Task<User?> CreateAsync(UserCreateDto createDto)
     {
-        throw new NotImplementedException();
+        return await Repository.CreateAsync(new User
+        {
+            Username = createDto.Username,
+            Password = new ScryptEncoder().Encode(createDto.Password)
+        });
     }
 
-    public override Task<User?> UpdateAsync(Guid id, UserUpdateDto updateDto)
+    public override async Task<User?> UpdateAsync(Guid id, UserUpdateDto updateDto)
     {
-        throw new NotImplementedException();
+        var user = await Repository.GetByIdAsync(id);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        user.Username = updateDto.Username;
+        if (updateDto.Password != "")
+        {
+            user.Password = new ScryptEncoder().Encode(updateDto.Password);
+        }
+
+        return await Repository.UpdateAsync(user);
     }
 }
