@@ -29,11 +29,10 @@ public class UserService : CrudService<User, UserCreateDto, UserUpdateDto>
             return null;
         }
 
-        user.Username = updateDto.Username;
-        if (updateDto.Password != "")
-        {
+        if (!string.IsNullOrEmpty(updateDto.Username))
+            user.Username = updateDto.Username;
+        if (!string.IsNullOrEmpty(updateDto.Password))
             user.Password = new ScryptEncoder().Encode(updateDto.Password);
-        }
 
         return await Repository.UpdateAsync(user);
     }

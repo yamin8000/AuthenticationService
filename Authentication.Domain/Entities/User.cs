@@ -1,5 +1,8 @@
-﻿namespace Authentication.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace Authentication.Domain.Entities;
+
+[Index(nameof(Username), IsUnique = true)]
 public class User : BaseEntity
 {
     public required string Username { get; set; }

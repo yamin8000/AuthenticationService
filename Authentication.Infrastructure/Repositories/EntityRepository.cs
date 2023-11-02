@@ -1,4 +1,5 @@
 ﻿using Authentication.Domain.Entities;
+using Authentication.Infrastructure.Funcs;
 using Authentication.Infrastructure.Interfaces;
 using Authentication.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
     {
         var entity = await _context.Set<TEntity>().FindAsync(id);
         if (entity == null) return false;
-        entity.DeletedAt = DateTime.Now;
+        entity.DeletedAt = DateTimeFuncs.Now();
         return await SaveAsyncChanges();
     }
 

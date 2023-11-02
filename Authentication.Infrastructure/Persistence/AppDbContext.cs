@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Authentication.Domain.Entities;
+using Authentication.Infrastructure.Funcs;
 using Microsoft.Extensions.Configuration;
 
 namespace Authentication.Infrastructure.Persistence;
@@ -28,11 +29,11 @@ public class AppDbContext : DbContext
                 {
                     case { State: EntityState.Added }:
                         entity.Id = Guid.NewGuid();
-                        entity.CreatedAt = DateTime.UtcNow;
-                        entity.UpdatedAt = DateTime.UtcNow;
+                        entity.CreatedAt = DateTimeFuncs.Now();
+                        entity.UpdatedAt = DateTimeFuncs.Now();
                         break;
                     case { State: EntityState.Modified }:
-                        entity.UpdatedAt = DateTime.UtcNow;
+                        entity.UpdatedAt = DateTimeFuncs.Now();
                         break;
                 }
             }
