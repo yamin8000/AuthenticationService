@@ -76,33 +76,11 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
 
     private async Task<bool> SaveAsyncChanges()
     {
-        int affectedRows;
-        try
-        {
-            affectedRows = await _context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return false;
-        }
-
-        return affectedRows > 0;
+        return await _context.SaveChangesAsync() > 0;
     }
 
     private async Task<TEntity?> SaveAsyncChanges(TEntity entity)
     {
-        int affectedRows;
-        try
-        {
-            affectedRows = await _context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return null;
-        }
-
-        return affectedRows > 0 ? entity : null;
+        return await _context.SaveChangesAsync() > 0 ? entity : null;
     }
 }
