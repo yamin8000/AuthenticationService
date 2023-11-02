@@ -2,7 +2,7 @@
 
 public enum Channel
 {
-    Sms,
-    Email,
-    Call
+    Email = 1,
+    Sms = 2,
+    Call = 3
 }

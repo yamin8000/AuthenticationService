@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Authentication.Domain.Entities;
+using Authentication.Infrastructure.Seeders;
 using Microsoft.Extensions.Configuration;
 
 namespace Authentication.Infrastructure.Persistence;
@@ -39,5 +40,11 @@ public class AppDbContext : DbContext
         }
 
         return base.SaveChangesAsync(cancellationToken);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        new ChannelSeeder(modelBuilder).Seed();
+        base.OnModelCreating(modelBuilder);
     }
 }

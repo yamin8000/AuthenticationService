@@ -1,5 +1,4 @@
-﻿using Authentication.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Domain.Entities;
 
@@ -7,10 +6,10 @@ namespace Authentication.Domain.Entities;
 [Index(nameof(User),nameof(Value), IsUnique = true)]
 public class UserChannel : BaseEntity
 {
-    public Channel Channel { get; set; }
     public required string Value { get; set; }
     public bool IsDefault { get; set; }
     
+    public required Channel Channel { get; set; }
     public User? User { get; set; }
     public Verification? Verification { get; set; }
     

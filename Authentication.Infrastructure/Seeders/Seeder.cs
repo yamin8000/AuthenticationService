@@ -1,11 +1,17 @@
-﻿using Authentication.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Seeders;
 
-public class Seeder<TEntity> where TEntity: BaseEntity
+public abstract class Seeder
 {
-    private readonly ModelBuilder _modelBuilder;
-    
-    
+    protected readonly ModelBuilder ModelBuilder;
+    protected readonly int Count;
+
+    protected Seeder(ModelBuilder modelBuilder, int count = 1)
+    {
+        ModelBuilder = modelBuilder;
+        Count = count;
+    }
+
+    public abstract void Seed();
 }
