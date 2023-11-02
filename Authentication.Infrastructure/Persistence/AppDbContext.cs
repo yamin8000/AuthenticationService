@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Authentication.Domain.Entities;
-using Authentication.Infrastructure.Funcs;
 using Microsoft.Extensions.Configuration;
 
 namespace Authentication.Infrastructure.Persistence;
@@ -19,7 +18,7 @@ public class AppDbContext : DbContext
     public DbSet<Login>? Logins { get; set; }
     public DbSet<PasswordReset>? PasswordResets { get; set; }
 
-    public override int SaveChanges()
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         foreach (var entry in ChangeTracker.Entries())
         {
@@ -29,16 +28,16 @@ public class AppDbContext : DbContext
                 {
                     case { State: EntityState.Added }:
                         entity.Id = Guid.NewGuid();
-                        entity.CreatedAt = DateTimeFuncs.Now();
-                        entity.UpdatedAt = DateTimeFuncs.Now();
+                        entity.CreatedAt = DateTime.UtcNow;
+                        entity.UpdatedAt = DateTime.UtcNow;
                         break;
                     case { State: EntityState.Modified }:
-                        entity.UpdatedAt = DateTimeFuncs.Now();
+                        entity.UpdatedAt = DateTime.UtcNow;
                         break;
                 }
             }
         }
 
-        return base.SaveChanges();
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

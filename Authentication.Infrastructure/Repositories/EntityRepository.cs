@@ -1,5 +1,4 @@
 ﻿using Authentication.Domain.Entities;
-using Authentication.Infrastructure.Funcs;
 using Authentication.Infrastructure.Interfaces;
 using Authentication.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +50,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
     {
         var entity = await _context.Set<TEntity>().FindAsync(id);
         if (entity == null) return false;
-        entity.DeletedAt = DateTimeFuncs.Now();
+        entity.DeletedAt = DateTime.UtcNow;
         return await SaveAsyncChanges();
     }
 
@@ -82,8 +81,9 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
         {
             affectedRows = await _context.SaveChangesAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             return false;
         }
 
@@ -97,8 +97,9 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
         {
             affectedRows = await _context.SaveChangesAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             return null;
         }
 

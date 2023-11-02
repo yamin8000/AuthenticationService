@@ -6,8 +6,8 @@ using Authentication.Infrastructure.Interfaces;
 using Authentication.Infrastructure.Persistence;
 using Authentication.Infrastructure.Repositories;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services
