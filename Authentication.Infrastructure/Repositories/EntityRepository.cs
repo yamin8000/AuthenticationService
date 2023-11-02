@@ -30,9 +30,9 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
             throw new ArgumentNullException(nameof(entity));
 
         _context.Set<TEntity>().Add(entity);
-        
+
         _context.Entry(entity).State = EntityState.Added;
-        
+
         return await Save(entity);
     }
 
@@ -44,6 +44,22 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
         _context.Entry(entity).State = EntityState.Modified;
 
         return await Save(entity);
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var entity = await _context.Set<TEntity>().FindAsync(id);
+        if (entity == null) return false;
+        entity.DeletedAt = DateTime.Now;
+        return await Save();
+    }
+
+    public async Task<bool> RestoreAsync(Guid id)
+    {
+        var entity = await _context.Set<TEntity>().FindAsync(id);
+        if (entity == null) return false;
+        entity.DeletedAt = null;
+        return await Save();
     }
 
     public virtual async Task<bool> ForceDeleteAsync(Guid id)
@@ -58,7 +74,7 @@ public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : Ba
         return await Save();
     }
 
-    public async Task<bool> Save()
+    private async Task<bool> Save()
     {
         int affectedRows;
         try

@@ -1,11 +1,10 @@
 ﻿using Authentication.Application.Interfaces;
 using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
-using Authentication.Infrastructure.Repositories;
 
 namespace Authentication.Application.Services;
 
-public class CrudService<TEntity, TCreateDto, TUpdateDto>
+public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
     : ICrudService<TEntity, TCreateDto, TUpdateDto>
     where TEntity : BaseEntity
     where TCreateDto : class
@@ -13,7 +12,7 @@ public class CrudService<TEntity, TCreateDto, TUpdateDto>
 {
     private readonly IRepository<TEntity> _repository;
 
-    public CrudService(IRepository<TEntity> repository)
+    protected CrudService(IRepository<TEntity> repository)
     {
         _repository = repository;
     }
@@ -28,16 +27,20 @@ public class CrudService<TEntity, TCreateDto, TUpdateDto>
         return await _repository.GetByIdAsync(id);
     }
 
-    public virtual Task<TEntity?> CreateAsync(TCreateDto createDto)
+    public abstract Task<TEntity?> CreateAsync(TCreateDto createDto);
+
+    public abstract Task<TEntity?> UpdateAsync(Guid id, TUpdateDto updateDto);
+
+    public async Task<bool> DeleteAsync(Guid id)
     {
-        return null;
+        return await _repository.DeleteAsync(id);
     }
 
-    public virtual Task<TEntity?> UpdateAsync(Guid id, TUpdateDto updateDto)
+    public async Task<bool> RestoreAsync(Guid id)
     {
-        return null;
+        return await _repository.RestoreAsync(id);
     }
-
+    
     public virtual async Task<bool> ForceDeleteAsync(Guid id)
     {
         return await _repository.ForceDeleteAsync(id);

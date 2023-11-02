@@ -10,5 +10,7 @@ public interface ICrudController<in TCreateDto, in TUpdateDto>
     Task<IActionResult> GetByIdAsync(Guid id);
     Task<IActionResult> CreateAsync(TCreateDto createDto);
     Task<IActionResult> UpdateAsync(Guid id, TUpdateDto updateDto);
+    Task<IActionResult> Delete(Guid id);
+    Task<IActionResult> Restore(Guid id);
     Task<IActionResult> ForceDeleteAsync(Guid id);
 }

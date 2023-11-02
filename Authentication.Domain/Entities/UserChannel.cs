@@ -2,7 +2,7 @@
 
 namespace Authentication.Domain.Entities;
 
-public class UserChannel : SafeDeleteEntity
+public class UserChannel : BaseEntity
 {
     public Channel Channel { get; set; }
     public required string Value { get; set; }

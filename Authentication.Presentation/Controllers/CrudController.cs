@@ -44,6 +44,18 @@ public class CrudController<TEntity, TCreateDto, TUpdateDto>
         return Ok(await _service.UpdateAsync(id, updateDto));
     }
 
+    [HttpPost("delete/{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        return Ok(await _service.DeleteAsync(id));
+    }
+
+    [HttpPost("restore/{id:guid}")]
+    public async Task<IActionResult> Restore(Guid id)
+    {
+        return Ok(await _service.RestoreAsync(id));
+    }
+
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> ForceDeleteAsync(Guid id)
     {
