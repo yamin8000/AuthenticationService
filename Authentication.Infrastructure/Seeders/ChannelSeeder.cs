@@ -14,7 +14,7 @@ public class ChannelSeeder : Seeder
         foreach (var channel in (Domain.Enums.Channel[])Enum.GetValues(typeof(Domain.Enums.Channel)))
         {
             ModelBuilder.Entity<Channel>().HasData(
-                new Channel { Name = channel.ToString() }
+                new Channel { Id = Guid.NewGuid(), Name = channel.ToString() }
             );
         }
     }

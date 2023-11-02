@@ -2,8 +2,8 @@
 
 namespace Authentication.Domain.Entities;
 
-[Index(nameof(Channel),nameof(Value), IsUnique = true)]
-[Index(nameof(User),nameof(Value), IsUnique = true)]
+//[Index(nameof(Channel),nameof(Value), IsUnique = true)]
+//[Index(nameof(User),nameof(Value), IsUnique = true)]
 public class UserChannel : BaseEntity
 {
     public required string Value { get; set; }
@@ -11,7 +11,6 @@ public class UserChannel : BaseEntity
     
     public required Channel Channel { get; set; }
     public User? User { get; set; }
-    public Verification? Verification { get; set; }
     
     public ICollection<PasswordReset> PasswordResets { get; set; } = new List<PasswordReset>();
     public ICollection<Login> Logins { get; set; } = new List<Login>();
