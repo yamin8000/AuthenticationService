@@ -9,11 +9,14 @@ using Authentication.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>();
 
-builder.Services.AddScoped<IRepository<User>, EntityRepository<User>>();
+builder.Services.AddScoped<IBaseCrudRepository<User>, BaseCrudRepository<User>>();
 builder.Services.AddScoped<ICrudService<User, UserCreateDto, UserUpdateDto>, UserService>();
 
-builder.Services.AddScoped<IRepository<UserChannel>, EntityRepository<UserChannel>>();
-builder.Services.AddScoped<ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto>, UserChannelService>();
+builder.Services.AddScoped<ICrudRepository<Channel>, CrudRepository<Channel>>();
+builder.Services.AddScoped<IBaseCrudRepository<UserChannel>, BaseCrudRepository<UserChannel>>();
+builder.Services.AddScoped<IBaseCrudRepository<Verification>, BaseCrudRepository<Verification>>();
+builder.Services
+    .AddScoped<ICrudService<Verification, CreateVerificationDto, UpdateVerificationDto>, VerificationService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
