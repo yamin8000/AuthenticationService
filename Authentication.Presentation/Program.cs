@@ -18,6 +18,8 @@ builder.Services.AddScoped<IBaseCrudRepository<UserChannel>, BaseCrudRepository<
 builder.Services.AddScoped<IBaseCrudRepository<Verification>, BaseCrudRepository<Verification>>();
 builder.Services
     .AddScoped<ICrudService<Verification, CreateVerificationDto, UpdateVerificationDto>, VerificationService>();
+builder.Services
+    .AddHttpClient<ICrudService<Verification, CreateVerificationDto, UpdateVerificationDto>, VerificationService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
