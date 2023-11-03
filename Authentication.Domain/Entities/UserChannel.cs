@@ -3,12 +3,16 @@
 public class UserChannel : BaseEntity
 {
     public required string Value { get; set; }
-    public bool IsVerified { get; set; }
     public bool IsDefault { get; set; }
 
     public User? User { get; set; }
+
+    public int ChannelId { get; set; }
     public required Channel Channel { get; set; }
 
-    public ICollection<PasswordReset> PasswordResets { get; set; } = new List<PasswordReset>();
-    public ICollection<Login> Logins { get; set; } = new List<Login>();
+    public Guid VerificationId { get; set; }
+    public required Verification Verification { get; set; }
+
+    public IEnumerable<PasswordReset> PasswordResets { get; set; } = new List<PasswordReset>();
+    public IEnumerable<Login> Logins { get; set; } = new List<Login>();
 }

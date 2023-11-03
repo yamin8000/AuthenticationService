@@ -6,5 +6,7 @@ namespace Authentication.Domain.Entities;
 public class Channel
 {
     public required int Id { get; set; }
-    public required string? Name { get; set; }
+    public required string Name { get; set; }
+
+    public UserChannel? UserChannel { get; set; } = null;
 }

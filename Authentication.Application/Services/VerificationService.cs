@@ -1,4 +1,5 @@
 using Authentication.Application.Dtos;
+using Authentication.Application.Utility;
 using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
 
@@ -55,7 +56,7 @@ public class VerificationService : CrudService<Verification, CreateVerificationD
         var verification = await Repository.CreateAsync(new Verification
         {
             UserChannel = userChannel,
-            Code = "123456"
+            Code = Helpers.GenerateVerificationCode()
         });
         return verification;
     }
