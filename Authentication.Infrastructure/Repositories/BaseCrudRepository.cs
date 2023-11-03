@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Repositories;
 
-public class EntityRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+public class BaseCrudRepository<TEntity> : IBaseCrudRepository<TEntity> where TEntity : BaseEntity
 {
     private readonly AppDbContext _context;
 
-    public EntityRepository(AppDbContext context)
+    public BaseCrudRepository(AppDbContext context)
     {
         _context = context;
     }
