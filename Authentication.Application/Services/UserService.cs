@@ -16,7 +16,8 @@ public class UserService : CrudService<User, UserCreateDto, UserUpdateDto>
         return await Repository.CreateAsync(new User
         {
             Username = createDto.Username,
-            Password = new ScryptEncoder().Encode(createDto.Password)
+            Password = new ScryptEncoder().Encode(createDto.Password),
+            VerificationId = createDto.VerificationId
         });
     }
 

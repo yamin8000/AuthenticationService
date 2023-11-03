@@ -10,6 +10,5 @@ public class User : BaseEntity
 
     public IEnumerable<UserChannel> Channels { get; set; } = new List<UserChannel>();
 
-    public Guid VerificationId { get; set; }
-    public required Verification Verification { get; set; }
+    public required Guid VerificationId { get; set; }
 }

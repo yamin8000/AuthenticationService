@@ -1,4 +1,5 @@
-﻿using Authentication.Application.Dtos;
+﻿using System.Reflection;
+using Authentication.Application.Dtos;
 using Authentication.Application.Interfaces;
 using Authentication.Application.Services;
 using Authentication.Domain.Entities;
@@ -20,7 +21,15 @@ builder.Services
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+    options.IncludeXmlComments(xmlPath.Replace("Representation", "Application"));
+    options.IncludeXmlComments(xmlPath.Replace("Representation", "Domain"));
+    options.IncludeXmlComments(xmlPath.Replace("Representation", "Infrastructure"));
+});
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
