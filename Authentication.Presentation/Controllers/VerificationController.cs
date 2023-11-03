@@ -14,12 +14,24 @@ public class VerificationController : CrudController<Verification, CreateVerific
     {
     }
 
+    /// <summary>
+    /// Request for new Verification, Step 1
+    /// </summary>
+    /// <param name="createVerificationDto">Verification Request DTO</param>
+    /// <returns></returns>
+    [ProducesResponseType(typeof(Verification), 200)]
     [HttpPost("Verify")]
     public async Task<IActionResult> SignUp(CreateVerificationDto createVerificationDto)
     {
         return await base.CreateAsync(createVerificationDto);
     }
 
+    /// <summary>
+    /// Verify new user, Step 2
+    /// </summary>
+    /// <param name="id" example="3b6291b6-7f95-4ec1-99e2-bc4a2150bf93">User Channel Id</param>
+    /// <param name="updateVerificationDto"></param>
+    /// <returns></returns>
     [HttpPut("Verify")]
     public async Task<IActionResult> Verify(Guid id, UpdateVerificationDto updateVerificationDto)
     {

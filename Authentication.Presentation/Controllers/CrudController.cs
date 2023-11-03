@@ -7,6 +7,8 @@ namespace Authentication.Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Consumes("application/json")]
+[Produces("application/json")]
 public class CrudController<TEntity, TCreateDto, TUpdateDto>
     : ControllerBase, ICrudController<TCreateDto, TUpdateDto>
     where TEntity : BaseEntity
