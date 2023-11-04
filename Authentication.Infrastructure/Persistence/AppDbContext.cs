@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     {
         var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         optionsBuilder.UseNpgsql(configuration.GetSection("ConnectionStrings")["Default"]);
+        optionsBuilder.UseLazyLoadingProxies();
     }
 
     public DbSet<User>? Users { get; set; }
@@ -18,6 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<Verification>? Verifications { get; set; }
     public DbSet<Login>? Logins { get; set; }
     public DbSet<PasswordReset>? PasswordResets { get; set; }
+    public DbSet<Channel>? Channels { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
@@ -28,7 +30,6 @@ public class AppDbContext : DbContext
                 switch (entry)
                 {
                     case { State: EntityState.Added }:
-                        entity.Id = Guid.NewGuid();
                         entity.CreatedAt = DateTime.UtcNow;
                         entity.UpdatedAt = DateTime.UtcNow;
                         break;

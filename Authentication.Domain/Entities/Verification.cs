@@ -4,7 +4,7 @@ public class Verification : BaseEntity
 {
     public required string Code { get; set; }
 
-    public required Guid UserChannelId { get; set; }
+    public bool IsVerified { get; set; }
 
-    public User? User { get; set; }
+    public virtual User? User { get; set; }
 }

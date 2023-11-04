@@ -2,7 +2,7 @@
 
 namespace Authentication.Application.Interfaces;
 
-public interface ICrudService<TEntity, in TCreateDto, in TUpdateDto> : IService
+public interface ICrudService<TEntity, in TCreateDto, in TUpdateDto>
     where TEntity : BaseEntity
     where TCreateDto : class
     where TUpdateDto : class
