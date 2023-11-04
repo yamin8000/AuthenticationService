@@ -17,17 +17,20 @@ public class AuthService : IAuthService
 
     private readonly ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto> _userChannelService;
     private readonly ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto> _verificationService;
+    private readonly ICrudService<User, UserCreateDto, UserUpdateDto> _userService;
 
     private readonly IRepository<Channel> _channelRepository;
 
     public AuthService(ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto> userChannelService,
         ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto> verificationService,
         IRepository<Channel> channelRepository,
+        ICrudService<User, UserCreateDto, UserUpdateDto> userService,
         HttpClient httpClient)
     {
         _userChannelService = userChannelService;
         _verificationService = verificationService;
         _httpClient = httpClient;
+        _userService = userService;
         _channelRepository = channelRepository;
     }
 
@@ -62,6 +65,31 @@ public class AuthService : IAuthService
 
         throw new ArgumentException(
             $"Code: {verifyDto.Code} is an incorrect code for UserChannel with id: \"{verifyDto.UserChannelId}\"");
+    }
+
+    public async Task<User> SetCredential(CredentialDto credentialDto)
+    {
+        var userChannel = await _userChannelService.GetByIdAsync(credentialDto.UserChannelId);
+        if (userChannel == null)
+            throw new ArgumentException($"There's no UserChannel with id: \"{credentialDto.UserChannelId}\"");
+        var verification = userChannel.Verification;
+        if (verification == null)
+            throw new ArgumentException($"UserChannel with id: \"{userChannel.Id}\" has no Verification.");
+        if (!verification.IsVerified)
+            throw new ArgumentException(
+                $"UserChannel with id: \"{userChannel.Id}\" and Verification with id: \"{verification.Id}\" is not verified.");
+        var user = await _userService.CreateAsync(new UserCreateDto
+        {
+            Username = credentialDto.Username,
+            Password = credentialDto.Password,
+            VerificationId = verification.Id
+        });
+        await _userChannelService.UpdateAsync(userChannel.Id, new UserChannelUpdateDto
+        {
+            User = user
+        });
+        return user ?? throw new Exception(
+            $"Failed to create User for UserChannel with id: \"{userChannel.Id}\" and Verification with id: \"{verification.Id}\"");
     }
 
     private async Task<Verification?> VerifyUserChannel(UserChannel userChannel)

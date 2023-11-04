@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Domain.Entities;
 
@@ -8,7 +9,7 @@ public class User : BaseEntity
     public required string Username { get; set; }
     public required string Password { get; set; }
 
-    public virtual IEnumerable<UserChannel> Channels { get; set; } = new List<UserChannel>();
+    [JsonIgnore] public virtual IEnumerable<UserChannel> Channels { get; set; } = new List<UserChannel>();
 
     public required Guid VerificationId { get; set; }
 }
