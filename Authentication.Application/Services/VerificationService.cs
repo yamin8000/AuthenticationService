@@ -14,13 +14,16 @@ public class VerificationService : CrudService<Verification, VerificationCreateD
     {
         return Repository.CreateAsync(new Verification
         {
-            Code = createDto.Code,
-            UserChannelId = createDto.UserChannelId
+            Code = createDto.Code
         });
     }
 
-    public override Task<Verification?> UpdateAsync(Guid id, VerificationUpdateDto updateDto)
+    public override async Task<Verification?> UpdateAsync(Guid id, VerificationUpdateDto updateDto)
     {
-        throw new NotImplementedException();
+        var verification = await Repository.GetByIdAsync(id);
+        if (verification == null)
+            throw new Exception($"There's no Verification with id: \"{id}\"");
+        verification.Code = updateDto.Code;
+        return await Repository.UpdateAsync(verification);
     }
 }

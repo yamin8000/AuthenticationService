@@ -47,24 +47,41 @@ public class AuthService : IAuthService
     {
         var userChannel = await _userChannelService.CreateAsync(userChannelCreateDto);
         if (userChannel == null) throw new Exception("Failed to create UserChannel DB record");
-        var verification = await CreateVerificationRecord(userChannel.Id);
-        userChannel.Verification = verification;
-        return userChannel;
+
+        var updatedUserChannel = await _userChannelService.UpdateAsync(userChannel.Id, new UserChannelUpdateDto
+        {
+            Verification = await CreateVerificationRecord(userChannel.Id)
+        });
+        if (updatedUserChannel == null)
+        {
+            throw new Exception("Failed to create UserChannel DB record.");
+        }
+
+        return updatedUserChannel;
     }
 
     private async Task<UserChannel> HandleOldRegister(UserChannel oldUserChannel)
     {
         var verification = _verificationService.GetAllAsync().Result.LastOrDefault(v =>
-                v == oldUserChannel.Verification, null
+                v?.Id == oldUserChannel.Verification?.Id, null
         );
-        if (verification != null)
+        if (verification == null)
         {
             throw new Exception($"Failed to find Verification record for UserChannel with id: \"{oldUserChannel.Id}\"");
         }
 
-        verification = await CreateVerificationRecord(oldUserChannel.Id);
-        oldUserChannel.Verification = verification;
-        return oldUserChannel;
+        CheckVerificationInterval(verification);
+
+        var updatedUserChannel = await _userChannelService.UpdateAsync(oldUserChannel.Id, new UserChannelUpdateDto
+        {
+            Verification = await UpdateVerificationRecord(verification, Helpers.GenerateVerificationCode())
+        });
+        if (updatedUserChannel == null)
+        {
+            throw new Exception("Failed to create UserChannel DB record.");
+        }
+
+        return updatedUserChannel;
     }
 
     private async Task<Verification> CreateVerificationRecord(Guid userChannelId)
@@ -73,7 +90,23 @@ public class AuthService : IAuthService
         {
             Code = Helpers.GenerateVerificationCode(),
             UserChannelId = userChannelId
-        }) ?? throw new Exception("Failed to create Verification database record");
+        }) ?? throw new Exception("Failed to create Verification database record.");
+    }
+
+    private async Task<Verification> UpdateVerificationRecord(Verification verification, string code)
+    {
+        return await _verificationService.UpdateAsync(verification.Id, new VerificationUpdateDto
+        {
+            Code = code
+        }) ?? throw new Exception("Failed to update Verification database record.");
+    }
+
+    private void CheckVerificationInterval(Verification verification)
+    {
+        var interval = (DateTime.UtcNow - verification.UpdatedAt).TotalSeconds;
+        if (interval <= Constants.SmsTimer)
+            throw new Exception(
+                $"{interval} seconds from {Constants.SmsTimer} seconds, Verification with id: {verification.Id} is not expired yet!");
     }
 
     private async Task SendCodeToChannel(UserChannel userChannel)

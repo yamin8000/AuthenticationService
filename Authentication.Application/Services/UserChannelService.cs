@@ -19,13 +19,13 @@ public class UserChannelService : CrudService<UserChannel, UserChannelCreateDto,
 
     public override async Task<UserChannel?> CreateAsync(UserChannelCreateDto createDto)
     {
-        var userChannel = await _channelRepository.GetByIdAsync(createDto.ChannelId);
-        if (userChannel != null)
+        var channel = await _channelRepository.GetByIdAsync(createDto.ChannelId);
+        if (channel != null)
         {
             return await Repository.CreateAsync(new UserChannel
             {
                 Value = createDto.Value,
-                Channel = userChannel
+                Channel = channel
             });
         }
 
@@ -33,8 +33,20 @@ public class UserChannelService : CrudService<UserChannel, UserChannelCreateDto,
         throw new ArgumentException($"Channel must be one of these values: {Join(", ", names)}");
     }
 
-    public override Task<UserChannel?> UpdateAsync(Guid id, UserChannelUpdateDto updateDto)
+    public override async Task<UserChannel?> UpdateAsync(Guid id, UserChannelUpdateDto updateDto)
     {
-        throw new NotImplementedException();
+        var userChannel = await Repository.GetByIdAsync(id);
+        if (userChannel == null)
+            throw new Exception($"There's not UserChannel with id: \"{id}\"");
+        userChannel.IsDefault = updateDto.IsDefault;
+        if (updateDto.Verification != null)
+            userChannel.Verification = updateDto.Verification;
+        if (updateDto.Channel != null)
+            userChannel.Channel = updateDto.Channel;
+        if (updateDto.Value != null)
+            userChannel.Value = updateDto.Value;
+        if (updateDto.User != null)
+            userChannel.User = updateDto.User;
+        return await Repository.UpdateAsync(userChannel);
     }
 }

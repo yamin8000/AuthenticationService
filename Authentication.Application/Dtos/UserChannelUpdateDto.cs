@@ -1,8 +1,12 @@
+using Authentication.Domain.Entities;
+
 namespace Authentication.Application.Dtos;
 
 public class UserChannelUpdateDto
 {
-    public required string Code { get; set; }
-
-    public required int ChannelId { get; set; }
+    public string? Value { get; set; }
+    public bool IsDefault { get; set; }
+    public User? User { get; set; }
+    public Channel? Channel { get; set; }
+    public Verification? Verification { get; set; }
 }
