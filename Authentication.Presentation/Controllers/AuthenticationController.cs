@@ -20,14 +20,15 @@ public class AuthenticationController : ControllerBase
 
     [ProducesResponseType(typeof(UserChannel), 200)]
     [HttpPost("SignUp")]
-    public async Task<IActionResult> SignUp(UserChannelCreateDto userChannelCreateDto)
+    public async Task<IActionResult> SignUp(SignUpDto signUpDto)
     {
-        return Ok(await _authService.Register(userChannelCreateDto));
+        return Ok(await _authService.Register(signUpDto));
     }
 
+    [ProducesResponseType(typeof(UserChannel), 200)]
     [HttpPost("Verify")]
-    public async Task<IActionResult> Verify(UserChannelUpdateDto userChannelUpdateDto)
+    public async Task<IActionResult> Verify(VerifyDto verifyDto)
     {
-        return Ok(await _authService.Verify(userChannelUpdateDto));
+        return Ok(await _authService.Verify(verifyDto));
     }
 }
