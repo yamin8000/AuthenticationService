@@ -5,7 +5,7 @@ namespace Authentication.Application.Interfaces;
 
 public interface IAuthService
 {
-    public Task<UserChannel> Register(UserChannelCreateDto userChannelCreateDto);
+    public Task<UserChannel> Register(SignUpDto signUpDto);
 
-    public Task<User> Verify(UserChannelUpdateDto userChannelUpdateDto);
+    public Task<UserChannel> Verify(VerifyDto verifyDto);
 }

@@ -1,36 +1,24 @@
 using Authentication.Application.Dtos;
 using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
-using static System.String;
 
 namespace Authentication.Application.Services;
 
 public class UserChannelService : CrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto>
 {
-    private readonly IRepository<Channel> _channelRepository;
-
-    public UserChannelService(
-        ICrudRepository<UserChannel> repository,
-        IRepository<Channel> channelRepository) :
+    public UserChannelService(ICrudRepository<UserChannel> repository) :
         base(repository)
     {
-        _channelRepository = channelRepository;
     }
 
     public override async Task<UserChannel?> CreateAsync(UserChannelCreateDto createDto)
     {
-        var channel = await _channelRepository.GetByIdAsync(createDto.ChannelId);
-        if (channel != null)
+        return await Repository.CreateAsync(new UserChannel
         {
-            return await Repository.CreateAsync(new UserChannel
-            {
-                Value = createDto.Value,
-                Channel = channel
-            });
-        }
-
-        var names = Enum.GetNames(typeof(Domain.Enums.Channel));
-        throw new ArgumentException($"Channel must be one of these values: {Join(", ", names)}");
+            IsDefault = createDto.IsDefault,
+            Value = createDto.Value,
+            Channel = createDto.Channel
+        });
     }
 
     public override async Task<UserChannel?> UpdateAsync(Guid id, UserChannelUpdateDto updateDto)

@@ -14,7 +14,8 @@ public class VerificationService : CrudService<Verification, VerificationCreateD
     {
         return Repository.CreateAsync(new Verification
         {
-            Code = createDto.Code
+            Code = createDto.Code,
+            IsVerified = createDto.IsVerified
         });
     }
 
@@ -23,7 +24,9 @@ public class VerificationService : CrudService<Verification, VerificationCreateD
         var verification = await Repository.GetByIdAsync(id);
         if (verification == null)
             throw new Exception($"There's no Verification with id: \"{id}\"");
-        verification.Code = updateDto.Code;
+        if (updateDto.Code != null)
+            verification.Code = updateDto.Code;
+        verification.IsVerified = updateDto.IsVerified;
         return await Repository.UpdateAsync(verification);
     }
 }

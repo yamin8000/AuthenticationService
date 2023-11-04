@@ -1,8 +1,8 @@
 namespace Authentication.Application.Dtos;
 
-public class VerificationCreateDto
+public class VerifyDto
 {
     public required string Code { get; set; }
 
-    public bool IsVerified { get; set; } = false;
+    public required Guid UserChannelId { get; set; }
 }
