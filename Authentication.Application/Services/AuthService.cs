@@ -53,6 +53,9 @@ public class AuthService : IAuthService
 
         if (userChannel != null && verification.Code == verifyDto.Code)
         {
+            if (verification.IsVerified)
+                throw new Exception($"Verification with id: \"{verification.Id}\" is already verified.");
+
             await VerifyUserChannel(userChannel);
             return userChannel;
         }
