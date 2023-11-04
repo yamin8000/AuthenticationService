@@ -1,5 +1,3 @@
-using Authentication.Domain.Entities;
-
 namespace Authentication.Application.Dtos;
 
 public class VerificationUpdateDto
