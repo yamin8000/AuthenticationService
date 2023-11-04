@@ -6,7 +6,7 @@ namespace Authentication.Presentation.Controllers;
 
 public class UserController : CrudController<User, UserCreateDto, UserUpdateDto>
 {
-    public UserController(ICrudService<User, UserCreateDto, UserUpdateDto> service) : base(service)
+    public UserController(ICrudService<User, UserCreateDto, UserUpdateDto> authService) : base(authService)
     {
     }
 }

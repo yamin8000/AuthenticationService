@@ -10,15 +10,24 @@ using Authentication.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>();
 
+//User
 builder.Services.AddScoped<ICrudRepository<User>, CrudRepository<User>>();
 builder.Services.AddScoped<ICrudService<User, UserCreateDto, UserUpdateDto>, UserService>();
 
+//User Channel
 builder.Services.AddScoped<ICrudRepository<UserChannel>, CrudRepository<UserChannel>>();
+builder.Services
+    .AddScoped<ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto>, UserChannelService>();
+
+//Verification
 builder.Services.AddScoped<ICrudRepository<Verification>, CrudRepository<Verification>>();
 builder.Services
-    .AddHttpClient<ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto>,
-        CrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto>>();
-builder.Services.AddScoped<IService, AuthService>();
+    .AddScoped<ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto>, VerificationService>();
+
+//Authentication
+builder.Services.AddScoped<IRepository<Channel>, Repository<Channel>>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient<IAuthService, AuthService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
