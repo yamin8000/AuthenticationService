@@ -1,8 +1,8 @@
-using Authentication.Domain.Entities;
-
 namespace Authentication.Application.Dtos;
 
-public class UpdateVerificationDto
+public class VerificationCreateDto
 {
     public required string Code { get; set; }
+
+    public required Guid UserChannelId { get; set; }
 }

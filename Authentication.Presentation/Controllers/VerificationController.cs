@@ -7,9 +7,9 @@ namespace Authentication.Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class VerificationController : CrudController<Verification, CreateVerificationDto, UpdateVerificationDto>
+public class VerificationController : CrudController<Verification, VerificationCreateDto, VerificationUpdateDto>
 {
-    public VerificationController(ICrudService<Verification, CreateVerificationDto, UpdateVerificationDto> service) :
+    public VerificationController(ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto> service) :
         base(service)
     {
     }
@@ -17,33 +17,33 @@ public class VerificationController : CrudController<Verification, CreateVerific
     /// <summary>
     /// Request for new Verification, Step 1
     /// </summary>
-    /// <param name="createVerificationDto">Verification Request DTO</param>
+    /// <param name="verificationCreateDto">Verification Request DTO</param>
     /// <returns></returns>
     [ProducesResponseType(typeof(Verification), 200)]
     [HttpPost("Verify")]
-    public async Task<IActionResult> SignUp(CreateVerificationDto createVerificationDto)
+    public async Task<IActionResult> SignUp(VerificationCreateDto verificationCreateDto)
     {
-        return await base.CreateAsync(createVerificationDto);
+        return await base.CreateAsync(verificationCreateDto);
     }
 
     /// <summary>
     /// Verify new user, Step 2
     /// </summary>
     /// <param name="id" example="3b6291b6-7f95-4ec1-99e2-bc4a2150bf93">User Channel Id</param>
-    /// <param name="updateVerificationDto"></param>
+    /// <param name="verificationUpdateDto"></param>
     /// <returns></returns>
     [HttpPut("Verify")]
-    public async Task<IActionResult> Verify(Guid id, UpdateVerificationDto updateVerificationDto)
+    public async Task<IActionResult> Verify(Guid id, VerificationUpdateDto verificationUpdateDto)
     {
-        return await base.UpdateAsync(id, updateVerificationDto);
+        return await base.UpdateAsync(id, verificationUpdateDto);
     }
 
-    public override async Task<IActionResult> CreateAsync(CreateVerificationDto createDto)
+    public override async Task<IActionResult> CreateAsync(VerificationCreateDto verificationCreateDto)
     {
         return await Task.Run(Unauthorized);
     }
 
-    public override async Task<IActionResult> UpdateAsync(Guid id, UpdateVerificationDto updateDto)
+    public override async Task<IActionResult> UpdateAsync(Guid id, VerificationUpdateDto verificationUpdateDto)
     {
         return await Task.Run(Unauthorized);
     }

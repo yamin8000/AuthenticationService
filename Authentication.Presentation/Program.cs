@@ -10,16 +10,15 @@ using Authentication.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>();
 
-builder.Services.AddScoped<IBaseCrudRepository<User>, BaseCrudRepository<User>>();
+builder.Services.AddScoped<ICrudRepository<User>, CrudRepository<User>>();
 builder.Services.AddScoped<ICrudService<User, UserCreateDto, UserUpdateDto>, UserService>();
 
-builder.Services.AddScoped<ICrudRepository<Channel>, CrudRepository<Channel>>();
-builder.Services.AddScoped<IBaseCrudRepository<UserChannel>, BaseCrudRepository<UserChannel>>();
-builder.Services.AddScoped<IBaseCrudRepository<Verification>, BaseCrudRepository<Verification>>();
+builder.Services.AddScoped<ICrudRepository<UserChannel>, CrudRepository<UserChannel>>();
+builder.Services.AddScoped<ICrudRepository<Verification>, CrudRepository<Verification>>();
 builder.Services
-    .AddScoped<ICrudService<Verification, CreateVerificationDto, UpdateVerificationDto>, VerificationService>();
-builder.Services
-    .AddHttpClient<ICrudService<Verification, CreateVerificationDto, UpdateVerificationDto>, VerificationService>();
+    .AddHttpClient<ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto>,
+        CrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto>>();
+builder.Services.AddScoped<IService, AuthService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

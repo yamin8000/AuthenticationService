@@ -1,11 +1,13 @@
+﻿using Authentication.Domain.Entities;
+
 namespace Authentication.Infrastructure.Interfaces;
 
-public interface ICrudRepository<T>
+public interface ICrudRepository<TEntity> where TEntity : BaseEntity
 {
-    Task<T?> GetByIdAsync(Guid id);
-    Task<IEnumerable<T?>> GetAllAsync();
-    Task<T?> CreateAsync(T? entity);
-    Task<T?> UpdateAsync(T? entity);
+    Task<TEntity?> GetByIdAsync(Guid id);
+    Task<IEnumerable<TEntity?>> GetAllAsync();
+    Task<TEntity?> CreateAsync(TEntity? entity);
+    Task<TEntity?> UpdateAsync(TEntity? entity);
     Task<bool> DeleteAsync(Guid id);
     Task<bool> RestoreAsync(Guid id);
     Task<bool> ForceDeleteAsync(Guid id);

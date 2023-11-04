@@ -7,7 +7,7 @@ namespace Authentication.Application.Services;
 
 public class UserService : CrudService<User, UserCreateDto, UserUpdateDto>
 {
-    public UserService(IBaseCrudRepository<User> repository) : base(repository)
+    public UserService(ICrudRepository<User> repository) : base(repository)
     {
     }
 

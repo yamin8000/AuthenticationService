@@ -10,9 +10,9 @@ public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
     where TCreateDto : class
     where TUpdateDto : class
 {
-    protected readonly IBaseCrudRepository<TEntity> Repository;
+    protected readonly ICrudRepository<TEntity> Repository;
 
-    protected CrudService(IBaseCrudRepository<TEntity> repository)
+    protected CrudService(ICrudRepository<TEntity> repository)
     {
         Repository = repository;
     }
