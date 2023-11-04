@@ -30,7 +30,6 @@ public class AppDbContext : DbContext
                 switch (entry)
                 {
                     case { State: EntityState.Added }:
-                        entity.Id = Guid.NewGuid();
                         entity.CreatedAt = DateTime.UtcNow;
                         entity.UpdatedAt = DateTime.UtcNow;
                         break;
