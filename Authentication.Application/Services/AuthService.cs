@@ -19,6 +19,7 @@ public class AuthService : IAuthService
     private readonly ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto> _userChannelService;
     private readonly ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto> _verificationService;
     private readonly ICrudService<User, UserCreateDto, UserUpdateDto> _userService;
+    private readonly ICrudService<PasswordReset, PasswordResetCreateDto, PasswordResetUpdateDto> _passwordResetService;
 
     private readonly IRepository<Channel> _channelRepository;
 
@@ -28,11 +29,13 @@ public class AuthService : IAuthService
         ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto> verificationService,
         IRepository<Channel> channelRepository,
         ICrudService<User, UserCreateDto, UserUpdateDto> userService,
+        ICrudService<PasswordReset, PasswordResetCreateDto, PasswordResetUpdateDto> passwordResetService,
         HttpClient httpClient)
     {
         _userChannelService = userChannelService;
         _verificationService = verificationService;
         _httpClient = httpClient;
+        _passwordResetService = passwordResetService;
         _userService = userService;
         _channelRepository = channelRepository;
     }
@@ -45,7 +48,7 @@ public class AuthService : IAuthService
         var userChannel = await (oldUserChannel == null
             ? HandleNewRegister(signUpDto)
             : HandleOldRegister(oldUserChannel));
-        await SendCodeToChannel(userChannel);
+        await SendVerificationCodeToChannel(userChannel);
         return userChannel;
     }
 
@@ -104,6 +107,55 @@ public class AuthService : IAuthService
             throw new Exception("Username or password is incorrect.");
         return user;
     }
+
+    public async Task<PasswordResetRequestDto> PasswordResetRequest(PasswordResetRequestDto passwordResetRequestDto)
+    {
+        var result = Task.FromResult(passwordResetRequestDto);
+
+        var userChannel = _userChannelService.GetAllAsync().Result.FirstOrDefault(userChannel =>
+            userChannel?.Channel.Id == passwordResetRequestDto.ChannelId &&
+            userChannel.Value == passwordResetRequestDto.Value, null);
+        if (userChannel == null)
+            return await result;
+        var token = Helpers.GeneratePasswordResetToken();
+        await _passwordResetService.CreateAsync(new PasswordResetCreateDto
+        {
+            Token = token,
+            IsUsed = false,
+            UserChannel = userChannel
+        });
+        //todo refactor
+        await SendPasswordTokenToChannel(userChannel,
+            $"http://asnp.ir/Authentication/PasswordReset/{token}");
+        return await result;
+    }
+
+    public async Task<User> PasswordResetAction(string token, PasswordResetAction passwordResetAction)
+    {
+        var passwordReset = (await _passwordResetService.GetAllAsync())
+            .FirstOrDefault(pr => pr?.Token == token && !pr.IsUsed, null);
+        var isPasswordResetExpired =
+            (DateTime.UtcNow - passwordReset?.CreatedAt)?.TotalSeconds > Constants.PasswordResetTimer;
+        if (passwordReset == null || isPasswordResetExpired)
+            throw new ArgumentException($"Password reset token is incorrect or already used: \"{token}\"");
+
+        var userId = passwordReset.UserChannel?.User?.Id;
+        if (userId == null)
+            throw new Exception("Somehow User is null");
+        //todo handling nulls
+        var user = await _userService.UpdateAsync((Guid)userId, new UserUpdateDto
+        {
+            Password = passwordResetAction.Password
+        });
+        await _passwordResetService.UpdateAsync(passwordReset.Id, new PasswordResetUpdateDto
+        {
+            IsUsed = true
+        });
+        if (user == null)
+            throw new Exception("Failed to changed user password");
+        return user;
+    }
+
 
     private async Task<Verification?> VerifyUserChannel(UserChannel userChannel)
     {
@@ -204,7 +256,7 @@ public class AuthService : IAuthService
         return (DateTime.UtcNow - verification.UpdatedAt).TotalSeconds <= Constants.SmsTimer;
     }
 
-    private async Task SendCodeToChannel(UserChannel userChannel)
+    private async Task SendVerificationCodeToChannel(UserChannel userChannel)
     {
         var name = userChannel.Channel.Name;
         if (name == Domain.Enums.Channel.Email.ToString())
@@ -214,7 +266,7 @@ public class AuthService : IAuthService
 
         if (name == Domain.Enums.Channel.Sms.ToString())
         {
-            await HandleSmsChannel(userChannel);
+            await HandleVerificationSmsChannel(userChannel);
         }
 
         if (name == Domain.Enums.Channel.Call.ToString())
@@ -223,22 +275,49 @@ public class AuthService : IAuthService
         }
     }
 
-    private async Task HandleSmsChannel(UserChannel userChannel)
+    //todo refactor
+    private async Task SendPasswordTokenToChannel(UserChannel userChannel, string token)
+    {
+        var name = userChannel.Channel.Name;
+        if (name == Domain.Enums.Channel.Email.ToString())
+        {
+            throw new NotImplementedException();
+        }
+
+        if (name == Domain.Enums.Channel.Sms.ToString())
+        {
+            await SendSms(token, userChannel.Value);
+        }
+
+        if (name == Domain.Enums.Channel.Call.ToString())
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    private async Task HandleVerificationSmsChannel(UserChannel userChannel)
+    {
+        if (userChannel.Verification == null)
+            throw new Exception($"Verification for UserChannel with id: \"{userChannel.Id}\" is null.");
+        await SendSms(userChannel.Value, userChannel.Verification.Code);
+    }
+
+    private async Task SendSms(string text, string receptor)
     {
         var template = _configuration.GetSection("SMS-SDK")["Template"];
         var api = _configuration.GetSection("SMS-SDK")["Api"];
         if (template != null && api != null)
         {
-            var uri = CreateSmsUri(userChannel, api, template);
+            var uri = CreateSmsUri(api, template, receptor, text);
             var response = await _httpClient.GetAsync(uri);
             Console.WriteLine($"SMS Request HTTP Code: {response.StatusCode}");
         }
         else throw new Exception("SMS SDK information is empty in appsettings.json!");
     }
 
-    private static string CreateSmsUri(UserChannel userChannel, string? api, string? template)
+    private static string CreateSmsUri(string api, string template, string receptor, string text)
     {
         return
-            $"https://api.kavenegar.com/v1/{api}/verify/lookup.json?template={template}&receptor={userChannel.Value}&token={userChannel.Verification?.Code}";
+            $"https://api.kavenegar.com/v1/{api}/verify/lookup.json?template={template}&receptor={receptor}&token={text}";
     }
 }
