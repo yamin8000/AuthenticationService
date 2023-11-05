@@ -9,7 +9,7 @@ This service handles authentication functionalities.
 - [x] Sign-up
 - [x] Sign-in
 - [x] Verify
-- [x] SetCredentials
+- [x] Set Credentials
 - [ ] Reset Password
 
 ## Database
