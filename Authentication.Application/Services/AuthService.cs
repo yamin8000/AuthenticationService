@@ -107,7 +107,6 @@ public class AuthService : IAuthService
                     }
                 );
             }
-
             throw new ArgumentException($"Verification with id: \"{verification.Id}\" is expired!");
         }
 
@@ -212,20 +211,20 @@ public class AuthService : IAuthService
 
     private async Task HandleSmsChannel(UserChannel userChannel)
     {
-        var template = _configuration.GetSection("Kaveh")["Template"];
-        var api = _configuration.GetSection("Kaveh")["Api"];
+        var template = _configuration.GetSection("SMS-SDK")["Template"];
+        var api = _configuration.GetSection("SMS-SDK")["Api"];
         if (template != null && api != null)
         {
-            var uri = CreateKavehSmsNegarUri(userChannel, api, template);
+            var uri = CreateSmsUri(userChannel, api, template);
             var response = await _httpClient.GetAsync(uri);
             Console.WriteLine($"SMS Request HTTP Code: {response.StatusCode}");
         }
-        else throw new Exception("Kaveh Negar information is empty in appsettings.json!");
+        else throw new Exception("SMS SDK information is empty in appsettings.json!");
     }
 
-    private static string CreateKavehSmsNegarUri(UserChannel userChannel, string? api, string? template)
+    private static string CreateSmsUri(UserChannel userChannel, string? api, string? template)
     {
         return
-            $"https://api.kavenegar.com/v1/{api}/verify/lookup.json?template={template}&receptor={userChannel.Value}&token={userChannel.Verification.Code}";
+            $"https://api.kavenegar.com/v1/{api}/verify/lookup.json?template={template}&receptor={userChannel.Value}&token={userChannel.Verification?.Code}";
     }
 }
