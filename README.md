@@ -20,10 +20,10 @@ This service handles authentication functionalities contains Sign-up, Sing-in, F
 ![db-diagram](./Assets/database.jpg)
 </details>
 
-### Database init
+### Create Migrations and Database Update
 
 ```shell
 dotnet tool install --global dotnet-ef
-dotnet ef migrations add InitialCreate
+dotnet ef migrations add MigrationName
 dotnet ef database update
 ```
