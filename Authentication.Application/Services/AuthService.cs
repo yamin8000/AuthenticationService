@@ -4,6 +4,7 @@ using Authentication.Application.Utility;
 using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Scrypt;
 using static System.String;
 
 namespace Authentication.Application.Services;
@@ -20,6 +21,8 @@ public class AuthService : IAuthService
     private readonly ICrudService<User, UserCreateDto, UserUpdateDto> _userService;
 
     private readonly IRepository<Channel> _channelRepository;
+
+    private readonly ScryptEncoder _encoder = new ScryptEncoder();
 
     public AuthService(ICrudService<UserChannel, UserChannelCreateDto, UserChannelUpdateDto> userChannelService,
         ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto> verificationService,
@@ -92,6 +95,16 @@ public class AuthService : IAuthService
             $"Failed to create User for UserChannel with id: \"{userChannel.Id}\" and Verification with id: \"{verification.Id}\"");
     }
 
+    public async Task<User> Login(LoginDto loginDto)
+    {
+        var user = (await _userService.GetAllAsync()).FirstOrDefault(u =>
+            u?.Username == loginDto.Username &&
+            _encoder.Compare(loginDto.Password, u.Password), null);
+        if (user == null)
+            throw new Exception("Username or password is incorrect.");
+        return user;
+    }
+
     private async Task<Verification?> VerifyUserChannel(UserChannel userChannel)
     {
         var verification = userChannel.Verification;
@@ -107,6 +120,7 @@ public class AuthService : IAuthService
                     }
                 );
             }
+
             throw new ArgumentException($"Verification with id: \"{verification.Id}\" is expired!");
         }
 
