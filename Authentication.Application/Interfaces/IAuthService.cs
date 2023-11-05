@@ -10,4 +10,6 @@ public interface IAuthService
     public Task<UserChannel> Verify(VerifyDto verifyDto);
 
     public Task<User> SetCredential(CredentialDto credentialDto);
+
+    public Task<User> Login(LoginDto loginDto);
 }

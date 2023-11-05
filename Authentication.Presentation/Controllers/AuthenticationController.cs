@@ -43,4 +43,16 @@ public class AuthenticationController : ControllerBase
     {
         return Ok(await _authService.SetCredential(credentialDto));
     }
+
+    /// <summary>
+    /// Login with Username and Password
+    /// </summary>
+    /// <param name="loginDto"></param>
+    /// <returns></returns>
+    [ProducesResponseType(typeof(User), 200)]
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login(LoginDto loginDto)
+    {
+        return Ok(await _authService.Login(loginDto));
+    }
 }
