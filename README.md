@@ -12,7 +12,7 @@ This service handles authentication functionalities.
 - [x] Set Credentials
 - [ ] Reset Password
 > Scenario\
-1- The user enters his channel value (phone number, Email, ...).\
+1- The user enters his channel value (phone number, email address, ...).\
 2- If the user's channel value is already registered, a message will be sent to him.\
 3- In the text of the message, there is a password reset link, which is a combination of the password reset path and the token parameter. (Token is a random 32-character phrase.)\
 4- If the link is valid, the user will be redirected to the password change page.\
