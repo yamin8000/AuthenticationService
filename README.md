@@ -6,9 +6,11 @@ This service handles authentication functionalities contains Sign-up, Sing-in, F
 
 ## Features
 
-- [ ] Sign-up
-- [ ] Sign-in
-- [ ] Forgot Password
+- [x] Sign-up
+- [x] Sign-in
+- [x] Verify
+- [x] SetCredentials
+- [ ] Reset Password
 
 ## Database
 
