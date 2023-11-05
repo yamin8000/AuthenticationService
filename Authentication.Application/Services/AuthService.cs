@@ -286,7 +286,7 @@ public class AuthService : IAuthService
 
         if (name == Domain.Enums.Channel.Sms.ToString())
         {
-            await SendSms("AsayeshNovin-ResetPassword",token, userChannel.Value);
+            await SendSms("Reset-Password", token, userChannel.Value);
         }
 
         if (name == Domain.Enums.Channel.Call.ToString())
@@ -299,12 +299,12 @@ public class AuthService : IAuthService
     {
         if (userChannel.Verification == null)
             throw new Exception($"Verification for UserChannel with id: \"{userChannel.Id}\" is null.");
-        await SendSms("AsayeshNovin-Verify",userChannel.Value, userChannel.Verification.Code);
+        await SendSms("Verify", userChannel.Value, userChannel.Verification.Code);
     }
 
     private async Task SendSms(string templateKey, string text, string receptor)
     {
-        var template = _configuration.GetSection("SMS-SDK:Template")[templateKey];
+        var template = _configuration.GetSection($"SMS-SDK:Template:{templateKey}").Value;
         var api = _configuration.GetSection("SMS-SDK")["Api"];
         if (template != null && api != null)
         {
