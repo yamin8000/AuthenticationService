@@ -31,4 +31,16 @@ public class AuthenticationController : ControllerBase
     {
         return Ok(await _authService.Verify(verifyDto));
     }
+
+    /// <summary>
+    /// Sets Credential for the provided UserChannel
+    /// </summary>
+    /// <param name="credentialDto"></param>
+    /// <returns>User</returns>
+    [ProducesResponseType(typeof(User), 200)]
+    [HttpPost("SetCredentials")]
+    public async Task<IActionResult> SetCredential(CredentialDto credentialDto)
+    {
+        return Ok(await _authService.SetCredential(credentialDto));
+    }
 }
