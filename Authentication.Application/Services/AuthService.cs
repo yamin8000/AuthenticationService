@@ -125,7 +125,7 @@ public class AuthService : IAuthService
             UserChannel = userChannel
         });
         //todo refactor
-        await SendPasswordTokenToChannel(userChannel,
+        await SendResetPasswordTokenToChannel(userChannel,
             $"http://asnp.ir/Authentication/PasswordReset/{token}");
         return await result;
     }
@@ -276,7 +276,7 @@ public class AuthService : IAuthService
     }
 
     //todo refactor
-    private async Task SendPasswordTokenToChannel(UserChannel userChannel, string token)
+    private async Task SendResetPasswordTokenToChannel(UserChannel userChannel, string token)
     {
         var name = userChannel.Channel.Name;
         if (name == Domain.Enums.Channel.Email.ToString())
@@ -286,7 +286,7 @@ public class AuthService : IAuthService
 
         if (name == Domain.Enums.Channel.Sms.ToString())
         {
-            await SendSms(token, userChannel.Value);
+            await SendSms("AsayeshNovin-ResetPassword",token, userChannel.Value);
         }
 
         if (name == Domain.Enums.Channel.Call.ToString())
@@ -299,12 +299,12 @@ public class AuthService : IAuthService
     {
         if (userChannel.Verification == null)
             throw new Exception($"Verification for UserChannel with id: \"{userChannel.Id}\" is null.");
-        await SendSms(userChannel.Value, userChannel.Verification.Code);
+        await SendSms("AsayeshNovin-Verify",userChannel.Value, userChannel.Verification.Code);
     }
 
-    private async Task SendSms(string text, string receptor)
+    private async Task SendSms(string templateKey, string text, string receptor)
     {
-        var template = _configuration.GetSection("SMS-SDK")["Template"];
+        var template = _configuration.GetSection("SMS-SDK:Template")[templateKey];
         var api = _configuration.GetSection("SMS-SDK")["Api"];
         if (template != null && api != null)
         {

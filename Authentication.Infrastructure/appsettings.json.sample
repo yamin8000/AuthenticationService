@@ -1,9 +1,0 @@
-﻿{
-  "ConnectionStrings": {
-    "Default": ""
-  },
-    "SMS-SDK": {
-      "Api": "123",
-      "Template": "Temp"
-    }
-}
