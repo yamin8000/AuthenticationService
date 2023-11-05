@@ -11,7 +11,7 @@ This service handles authentication functionalities.
 - [x] Verify
 - [x] Set Credentials
 - [ ] Reset Password
-> Scenario
+> Scenario\
 1- The user enters his number.\
 2- If the user's number is already registered, a message will be sent to him.\
 3- In the text of the message, there is a password reset link, which is a combination of the password reset path and the token parameter. (Token is a random 32-character phrase.)\
