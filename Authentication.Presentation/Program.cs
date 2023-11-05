@@ -24,6 +24,11 @@ builder.Services.AddScoped<ICrudRepository<Verification>, CrudRepository<Verific
 builder.Services
     .AddScoped<ICrudService<Verification, VerificationCreateDto, VerificationUpdateDto>, VerificationService>();
 
+//Password Reset
+builder.Services.AddScoped<ICrudRepository<PasswordReset>, CrudRepository<PasswordReset>>();
+builder.Services
+    .AddScoped<ICrudService<PasswordReset, PasswordResetCreateDto, PasswordResetUpdateDto>, PasswordResetService>();
+
 //Authentication
 builder.Services.AddScoped<IRepository<Channel>, Repository<Channel>>();
 builder.Services.AddScoped<IAuthService, AuthService>();

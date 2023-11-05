@@ -1,4 +1,5 @@
-﻿using Authentication.Domain.Entities;
+﻿using System.Text;
+using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
 using Authentication.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,22 @@ public class CrudRepository<TEntity> : ICrudRepository<TEntity> where TEntity : 
         return await SaveAsyncChanges(entity);
     }
 
+    public virtual async Task<TEntity?> UpdateOrCreateAsync(
+        TEntity? entity, List<(string, string)> attributes
+    )
+    {
+        var whereStatements = new StringBuilder();
+        foreach (var attribute in attributes)
+            whereStatements.Append("where " + attribute.Item1 + " = '" + attribute.Item2 + "' ");
+        whereStatements.Append(';');
+        var record = _context.Set<TEntity>()
+            .FromSql($"SELECT * FROM {TableName()} WHERE {whereStatements}")
+            .FirstOrDefault();
+        if (record == null)
+            return await CreateAsync(entity);
+        return await UpdateAsync(entity);
+    }
+
     public async Task<bool> DeleteAsync(Guid id)
     {
         var entity = await _context.Set<TEntity>().FindAsync(id);
@@ -82,5 +99,12 @@ public class CrudRepository<TEntity> : ICrudRepository<TEntity> where TEntity : 
     private async Task<TEntity?> SaveAsyncChanges(TEntity entity)
     {
         return await _context.SaveChangesAsync() > 0 ? entity : null;
+    }
+
+    private string? TableName()
+    {
+        return _context.Model
+            .FindEntityType(typeof(TEntity))
+            ?.GetTableName();
     }
 }
