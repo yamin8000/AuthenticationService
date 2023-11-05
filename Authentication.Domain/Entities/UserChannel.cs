@@ -1,4 +1,6 @@
-﻿namespace Authentication.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Authentication.Domain.Entities;
 
 public class UserChannel : BaseEntity
 {
@@ -8,6 +10,6 @@ public class UserChannel : BaseEntity
     public virtual User? User { get; set; }
     public virtual required Channel Channel { get; set; }
     public virtual Verification? Verification { get; set; }
-    public virtual IEnumerable<PasswordReset> PasswordResets { get; set; } = new List<PasswordReset>();
+    [JsonIgnore] public virtual IEnumerable<PasswordReset> PasswordResets { get; set; } = new List<PasswordReset>();
     public virtual IEnumerable<Login> Logins { get; set; } = new List<Login>();
 }

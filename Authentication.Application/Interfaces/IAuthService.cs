@@ -12,4 +12,8 @@ public interface IAuthService
     public Task<User> SetCredential(CredentialDto credentialDto);
 
     public Task<User> Login(LoginDto loginDto);
+
+    public Task<PasswordResetRequestDto> PasswordResetRequest(PasswordResetRequestDto passwordResetRequestDto);
+
+    public Task<User> PasswordResetAction(string token, PasswordResetAction passwordResetAction);
 }

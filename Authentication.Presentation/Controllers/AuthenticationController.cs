@@ -55,4 +55,18 @@ public class AuthenticationController : ControllerBase
     {
         return Ok(await _authService.Login(loginDto));
     }
+
+    [ProducesResponseType(typeof(PasswordResetRequestDto), 200)]
+    [HttpPost("PasswordReset")]
+    public async Task<IActionResult> PasswordResetRequest(PasswordResetRequestDto passwordResetRequestDto)
+    {
+        return Ok(await _authService.PasswordResetRequest(passwordResetRequestDto));
+    }
+
+    [ProducesResponseType(typeof(User), 200)]
+    [HttpPost("PasswordReset/{token}")]
+    public async Task<IActionResult> PasswordResetAction(string token, PasswordResetAction passwordResetAction)
+    {
+        return Ok(await _authService.PasswordResetAction(token, passwordResetAction));
+    }
 }
