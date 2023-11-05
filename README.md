@@ -7,7 +7,7 @@ This service handles authentication functionalities.
 ## Features
 
 - [x] Sign-up
-- [x] Sign-in
+- [ ] Sign-in
 - [x] Verify
 - [x] Set Credentials
 - [ ] Reset Password
