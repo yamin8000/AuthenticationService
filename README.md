@@ -2,7 +2,7 @@
 
 ## Description
 
-This service handles authentication functionalities contains Sign-up, Sing-in, Forgot Password
+This service handles authentication functionalities.
 
 ## Features
 
