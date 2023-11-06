@@ -2,7 +2,7 @@
 
 ## Description
 
-This service handles authentication functionalities.
+This service is a subset of the User Management System (UMS) that handles authentication functionalities.
 
 ## Features
 
