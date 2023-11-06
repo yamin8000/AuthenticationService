@@ -3,6 +3,7 @@ using Authentication.Application.Interfaces;
 using Authentication.Application.Utility;
 using Authentication.Domain.Entities;
 using Authentication.Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Scrypt;
 using static System.String;
@@ -112,9 +113,10 @@ public class AuthService : IAuthService
     {
         var result = Task.FromResult(passwordResetRequestDto);
 
-        var userChannel = _userChannelService.GetAllAsync().Result.FirstOrDefault(userChannel =>
-            userChannel?.Channel.Id == passwordResetRequestDto.ChannelId &&
-            userChannel.Value == passwordResetRequestDto.Value, null);
+        var userChannel = (await _userChannelService.Set()
+            .Where(uc => uc.Channel.Id == passwordResetRequestDto.ChannelId)
+            .Where(uc => uc.Value == passwordResetRequestDto.Value)
+            .ToListAsync()).FirstOrDefault();
         if (userChannel == null)
             return await result;
         var token = Helpers.GeneratePasswordResetToken();

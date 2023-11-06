@@ -15,6 +15,11 @@ public class CrudRepository<TEntity> : ICrudRepository<TEntity> where TEntity : 
         _context = context;
     }
 
+    public virtual IQueryable<TEntity> Set()
+    {
+        return _context.Set<TEntity>();
+    }
+
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {
         return await _context.Set<TEntity>().FindAsync(id);
@@ -23,6 +28,20 @@ public class CrudRepository<TEntity> : ICrudRepository<TEntity> where TEntity : 
     public virtual async Task<IEnumerable<TEntity?>> GetAllAsync()
     {
         return await _context.Set<TEntity>().ToListAsync();
+    }
+
+    public virtual Task<List<TEntity>> GetByAttributesAsync(List<(string, string, object)> attributes)
+    {
+        var whereStatements = new StringBuilder();
+        for (var index = 0; index < attributes.Count; index++)
+        {
+            var attribute = attributes[index];
+            whereStatements.Append($"{attribute.Item1} {attribute.Item2} {attribute.Item3}");
+            if (index < attributes.Count - 1)
+                whereStatements.Append(" and");
+        }
+
+        return _context.Set<TEntity>().FromSql($"SELECT * FROM {TableName()} WHERE {whereStatements};").ToListAsync();
     }
 
     public virtual async Task<TEntity?> CreateAsync(TEntity? entity)

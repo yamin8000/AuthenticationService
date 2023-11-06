@@ -17,6 +17,11 @@ public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
         Repository = repository;
     }
 
+    public virtual IQueryable<TEntity> Set()
+    {
+        return Repository.Set();
+    }
+
     public virtual async Task<IEnumerable<TEntity?>> GetAllAsync()
     {
         return await Repository.GetAllAsync();
@@ -40,7 +45,7 @@ public abstract class CrudService<TEntity, TCreateDto, TUpdateDto>
     {
         return await Repository.RestoreAsync(id);
     }
-    
+
     public virtual async Task<bool> ForceDeleteAsync(Guid id)
     {
         return await Repository.ForceDeleteAsync(id);
