@@ -10,7 +10,7 @@ This service is a subset of the User Management System (UMS) that handles authen
 - [ ] Sign-in
 - [x] Verify
 - [x] Set Credentials
-- [ ] Reset Password
+- [x] Reset Password
 - [ ] Reset Username
 
 ## Database
